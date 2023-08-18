@@ -22,13 +22,13 @@ class sold:
                 break
     def sellemental(current_slot):
         sold.default(current_slot)
-        gcfg.cfg.hand.append({'name':'WaterDroplet','attack':2,'health':2,'type':'Elemental','tier':1})
+        gcfg.cfg.hand.append({'name':'WaterDroplet','attack':2,'health':2,'type':'Elemental','tier':1,'sprite':'assets/cards/water_droplet.png'})
         events.card_added()
     def sunbacon_relaxer(current_slot):
         sold.default(current_slot)
         i=0
         while i<2:
-            gcfg.cfg.hand.append({'name':'BloodGem','spell_cast':spell_cast.blood_gem})
+            gcfg.cfg.hand.append({'name':'BloodGem','spell_cast':spell_cast.blood_gem,'sprite':'assets/cards/blood_gem.png'})
             events.card_added()
             i+=1
 class eot:
@@ -68,7 +68,7 @@ class battlecry:
     def southsea_busker(current_target, current_slot):
         gcfg.cfg.bonus_start_turn_gold += 1
     def razorfen_geomancer(current_target, current_slot):
-        gcfg.cfg.hand.append({'name':'BloodGem','spell_cast':spell_cast.blood_gem})
+        gcfg.cfg.hand.append({'name':'BloodGem','spell_cast':spell_cast.blood_gem,'sprite':'assets/cards/blood_gem.png'})
         events.card_added()
     def rockpool_hunter(current_target, current_slot):
         target = input('Choose a murloc to buff:')
@@ -138,6 +138,7 @@ class events:
         for card in gcfg.cfg.board:
             if 'eot' in card:
                 card['eot'](gcfg.cfg.board.index(card))
+        gcfg.cfg.turn_over
     def attack(defending_player, attacking_player, attacking_slot):
         #choose target, check taunts
         taunt_minions = []
@@ -179,29 +180,29 @@ minion_list = [
 #{'name':,'attack':,'health','type':[],'tier':1,'taunt':,'reborn':,'deathrattle':,'battlecry':,'attacked':,'attack':,'sold':,'draw':,'sell':,'play':,}
 #{'name':'','attack':,'health':,'type':[''],'tier':2,},
 # t1
-{'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True},
-{'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner},
-{'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber},
-{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'reborn':True,'eot':eot.micro_mummy},
-{'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon},
-{'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,},
-{'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater},
-{'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer},
-{'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly},
-{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'reborn':True},
-{'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter},
-{'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1},
-{'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag},
-{'name':'Scavenging Hyena','attack':2,'health':2,'type':['Beast'],'tier':1,'die':die.scavenging_hyena},
-{'name':'Sellemental','attack':2,'health':2,'type':['Elemental'],'tier':1,'sold':sold.sellemental},
-{'name':'Shell Collector','attack':2,'health':1,'type':['Naga'],'tier':1,'battlecry':battlecry.shell_collector},
-{'name':'Southsea Busker','attack':3,'health':1,'type':['Pirate'],'tier':1,'battlecry':battlecry.southsea_busker},
-{'name':'Sun-Bacon Relaxer','attack':1,'health':2,'type':['Quilboar'],'tier':1,'sold':sold.sunbacon_relaxer},
-{'name':'Swampstriker','attack':1,'health':4,'type':['Murloc'],'tier':1,'play':play.swampstriker},
-{'name':'Thorncaptain','attack':4,'health':2,'type':['Quilboar','Pirate'],'tier':1,'draw':draw.thorncaptain},
-{'name':'Upbeat Frontdrake','attack':1,'health':1,'type':['Dragon'],'tier':1,'eot':eot.upbeat_frontdrake,'counter':3},
-{'name':'Wrath Weaver','attack':1,'health':4,'type':[],'tier':1,'play':play.wrath_weaver},
+{'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True,'sprite':'assets/cards/dozy_whelp.png'},
+{'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner,'sprite':'assets/cards/imprisoner.png'},
+{'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber,'sprite':'assets/cards/manasaber.png'},
+{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'reborn':True,'eot':eot.micro_mummy,'sprite':'assets/cards/micro_mummy.png'},
+{'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon,'sprite':'assets/cards/minimyrmidon.png'},
+{'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,'sprite':'assets/cards/mistake.png'},
+{'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater,'sprite':'assets/cards/picky_eater.png'},
+{'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer,'sprite':'assets/cards/razorfen_geomancer.png'},
+{'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly,'sprite':'assets/cards/refreshing_anomaly.png'},
+{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'reborn':True,'sprite':'assets/cards/risen_rider.png'},
+{'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter,'sprite':'assets/cards/rockpool_hunter.png'},
+{'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1,'sprite':'assets/cards/rot_hide_gnoll.png'},
+{'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag,'sprite':'assets/cards/scallywag.png'},
+{'name':'Scavenging Hyena','attack':2,'health':2,'type':['Beast'],'tier':1,'die':die.scavenging_hyena,'sprite':'assets/cards/scavenging_hyena.png'},
+{'name':'Sellemental','attack':2,'health':2,'type':['Elemental'],'tier':1,'sold':sold.sellemental,'sprite':'assets/cards/sellemental.png'},
+{'name':'Shell Collector','attack':2,'health':1,'type':['Naga'],'tier':1,'battlecry':battlecry.shell_collector,'sprite':'assets/cards/shell_collector.png'},
+{'name':'Southsea Busker','attack':3,'health':1,'type':['Pirate'],'tier':1,'battlecry':battlecry.southsea_busker,'sprite':'assets/cards/southsea_busker.png'},
+{'name':'Sun-Bacon Relaxer','attack':1,'health':2,'type':['Quilboar'],'tier':1,'sold':sold.sunbacon_relaxer,'sprite':'assets/cards/sunbacon_relaxer.png'},
+{'name':'Swampstriker','attack':1,'health':4,'type':['Murloc'],'tier':1,'play':play.swampstriker,'sprite':'assets/cards/swampstriker.png'},
+{'name':'Thorncaptain','attack':4,'health':2,'type':['Quilboar','Pirate'],'tier':1,'draw':draw.thorncaptain,'sprite':'assets/cards/thorncaptain.png'},
+{'name':'Upbeat Frontdrake','attack':1,'health':1,'type':['Dragon'],'tier':1,'eot':eot.upbeat_frontdrake,'counter':3,'sprite':'assets/cards/upbeat_frontdrake.png'},
+{'name':'Wrath Weaver','attack':1,'health':4,'type':[],'tier':1,'play':play.wrath_weaver,'sprite':'assets/cards/wrath_weaver.png'},
 # t2
-{'name':'Backstage Security','attack':4,'health':6,'type':['Demon'],'tier':2,'sot':sot.backstage_security},
+#{'name':'Backstage Security','attack':4,'health':6,'type':['Demon'],'tier':2,'sot':sot.backstage_security},
 ]
 
