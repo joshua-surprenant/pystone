@@ -9,8 +9,9 @@ class keywords:
     def taunt_check():
             return True
     def reborn(current_board, current_slot, minion):
-        minion[2] = 1
-        minion[0] += ' (Reborn)'
+        minion['health'] = 1
+        minion['name'] += ' (Reborn)'
+        minion['has_reborn'] = False
         gcfg.combat_board[current_board].insert(current_slot, minion)
 class sold:
     def default(current_slot):
@@ -171,8 +172,9 @@ class events:
                             minion_die_trigger['die'](current_board,current_slot,minion_die_trigger['id'],minion['type'])
                     if 'deathrattle' in minion:
                         minion['deathrattle'](current_board,current_slot)
-                    if 'reborn' in minion:
-                        minion['reborn'](current_board,current_slot,minion)
+                    if 'has_reborn' in minion:
+                        if minion['has_reborn'] == True:
+                            keywords.reborn(current_board,current_slot,minion)
 
 #all default minion values
 minion_list = [
@@ -182,13 +184,13 @@ minion_list = [
 {'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True},
 {'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner},
 {'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber},
-{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'reborn':True,'eot':eot.micro_mummy},
+{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'has_reborn':True,'eot':eot.micro_mummy},
 {'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon},
 {'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,},
 {'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater},
 {'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer},
 {'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly},
-{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'reborn':True},
+{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'has_reborn':True},
 {'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter},
 {'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1},
 {'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag},
