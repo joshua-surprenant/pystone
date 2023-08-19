@@ -9,8 +9,9 @@ class keywords:
     def taunt_check():
             return True
     def reborn(current_board, current_slot, minion):
-        minion[2] = 1
-        minion[0] += ' (Reborn)'
+        minion['health'] = 1
+        minion['name'] += ' (Reborn)'
+        minion['has_reborn'] = False
         gcfg.combat_board[current_board].insert(current_slot, minion)
 class sold:
     def default(current_slot):
@@ -172,24 +173,26 @@ class events:
                             minion_die_trigger['die'](current_board,current_slot,minion_die_trigger['id'],minion['type'])
                     if 'deathrattle' in minion:
                         minion['deathrattle'](current_board,current_slot)
-                    if 'reborn' in minion:
-                        minion['reborn'](current_board,current_slot,minion)
+                    if 'has_reborn' in minion:
+                        if minion['has_reborn'] == True:
+                            keywords.reborn(current_board,current_slot,minion)
 
 #all default minion values
 minion_list = [
 #{'name':,'attack':,'health','type':[],'tier':1,'taunt':,'reborn':,'deathrattle':,'battlecry':,'attacked':,'attack':,'sold':,'draw':,'sell':,'play':,}
 #{'name':'','attack':,'health':,'type':[''],'tier':2,},
 # t1
+
 {'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True,'sprite':'assets/cards/dozy_whelp.png'},
 {'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner,'sprite':'assets/cards/imprisoner.png'},
 {'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber,'sprite':'assets/cards/manasaber.png'},
-{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'reborn':True,'eot':eot.micro_mummy,'sprite':'assets/cards/micro_mummy.png'},
+{'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'has_reborn':True,'eot':eot.micro_mummy,'sprite':'assets/cards/micro_mummy.png'},
 {'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon,'sprite':'assets/cards/minimyrmidon.png'},
 {'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,'sprite':'assets/cards/mistake.png'},
 {'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater,'sprite':'assets/cards/picky_eater.png'},
 {'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer,'sprite':'assets/cards/razorfen_geomancer.png'},
 {'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly,'sprite':'assets/cards/refreshing_anomaly.png'},
-{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'reborn':True,'sprite':'assets/cards/risen_rider.png'},
+{'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'has_reborn':True,'sprite':'assets/cards/risen_rider.png'},
 {'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter,'sprite':'assets/cards/rockpool_hunter.png'},
 {'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1,'sprite':'assets/cards/rot_hide_gnoll.png'},
 {'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag,'sprite':'assets/cards/scallywag.png'},
@@ -202,6 +205,7 @@ minion_list = [
 {'name':'Thorncaptain','attack':4,'health':2,'type':['Quilboar','Pirate'],'tier':1,'draw':draw.thorncaptain,'sprite':'assets/cards/thorncaptain.png'},
 {'name':'Upbeat Frontdrake','attack':1,'health':1,'type':['Dragon'],'tier':1,'eot':eot.upbeat_frontdrake,'counter':3,'sprite':'assets/cards/upbeat_frontdrake.png'},
 {'name':'Wrath Weaver','attack':1,'health':4,'type':[],'tier':1,'play':play.wrath_weaver,'sprite':'assets/cards/wrath_weaver.png'},
+
 # t2
 #{'name':'Backstage Security','attack':4,'health':6,'type':['Demon'],'tier':2,'sot':sot.backstage_security},
 ]
