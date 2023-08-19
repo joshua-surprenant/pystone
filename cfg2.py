@@ -13,3 +13,5 @@ blood_gem_stats = [1, 1]
 bonus_start_turn_gold = 0
 refresh_cost_1 = 1
 refresh_cost_2 = 1
+
+turn_over = True
