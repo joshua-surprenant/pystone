@@ -19,8 +19,8 @@ class sold:
         for minion in minion_list:
             if gcfg.cfg.board[current_slot]['name'] == minion['name']:
                 gcfg.pool[minion['tier']-1].append(minion)
-                del gcfg.cfg.board[int(current_slot)]
                 break
+        del gcfg.cfg.board[int(current_slot)]
     def sellemental(current_slot):
         sold.default(current_slot)
         gcfg.cfg.hand.append({'name':'WaterDroplet','attack':2,'health':2,'type':'Elemental','tier':1})
