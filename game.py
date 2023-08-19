@@ -4,7 +4,7 @@
 
 
 import gcfg
-
+import combat
 import cfg1
 import cfg2
 import turn
@@ -21,7 +21,7 @@ while game_going == True:
         gcfg.cfg = __import__(player)
         turn.turn_input()
     #combat
-    import combat
+    combat.combat()
     if gcfg.start_gold < 10:
         gcfg.start_gold += 1
 
