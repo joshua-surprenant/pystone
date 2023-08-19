@@ -65,20 +65,44 @@ def actionp():
         gcfg.cfg.action = int(input('Select an action. 0=endturn 1=buy 2=play 3=refresh 4=sell.' + '\n'))
         #buy minion
         if gcfg.cfg.action == 1:
-            slot = int(input('Which minion?'))
-            player_actions.buy_minion(slot)
+            if gcfg.cfg.gold >= 3:
+                gcfg.cfg.gold -= 3
+                slot = int(input('Which minion?'))
+                gcfg.cfg.current_shop[slot]['id'] = gcfg.curid
+                gcfg.curid += 1
+                gcfg.cfg.hand.append(gcfg.cfg.current_shop.pop(slot))
+                abilities.events.card_added()
+            else:
+                print('Not enough gold!')
         #play card
         elif gcfg.cfg.action == 2:
             current_slot = int(input('Which card?'))
             current_target = int(input('Play to where?'))
-            player_actions.play_card(current_slot,current_target)
+            gcfg.cfg.board.insert(current_target, gcfg.cfg.hand.pop(current_slot))
+            card = gcfg.cfg.board[current_target]
+            if 'battlecry' in card:
+                card['battlecry'](current_target, current_slot)
+            if 'spellcast' in card:
+                card['spell_cast'](current_target, current_slot)  
+            for each_card in gcfg.cfg.board:
+                if 'play' in each_card:
+                    each_card['play'](gcfg.cfg.board.index(each_card),each_card['type'])
         #refresh
         elif gcfg.cfg.action == 3:
-            player_actions.refresh()
+            if gcfg.cfg.gold >= 1:
+                gcfg.cfg.gold -= gcfg.cfg.refresh_cost_1
+                gcfg.cfg.refresh_cost_1 = gcfg.cfg.refresh_cost_2
+                gcfg.cfg.refresh_cost_2 = 1
+                refresh_shop()
+            else:
+                print('Not enough gold!')
         #sell minion
         elif gcfg.cfg.action == 4:
-            slot = int(input('Which minion?'))
-            player_actions.sell(slot)
+            current_slot = int(input('Which minion?'))
+            if 'sold' in gcfg.cfg.board[current_slot]:
+                gcfg.cfg.board[current_slot]['sold'](current_slot)
+            else:
+                abilities.sold.default(current_slot)
         #end turn
         elif gcfg.cfg.action == 0:
             abilities.events.turn_end()
@@ -86,40 +110,6 @@ def actionp():
         #other
         else:
             print('Invalid input!')
-
-class player_actions:
-    def buy_minion(slot):
-        if gcfg.cfg.gold >= 3:
-            gcfg.cfg.gold -= 3
-            gcfg.cfg.current_shop[slot]['id'] = gcfg.curid
-            gcfg.curid += 1
-            gcfg.cfg.hand.append(gcfg.cfg.current_shop.pop(slot))
-            abilities.events.card_added()
-        else:
-            print('Not enough gold!')
-    def play_card(current_slot, current_target):
-        gcfg.cfg.board.insert(current_target, gcfg.cfg.hand.pop(current_slot))
-        card = gcfg.cfg.board[current_target]
-        if 'battlecry' in card:
-            card['battlecry'](current_target, current_slot)
-        if 'spellcast' in card:
-            card['spell_cast'](current_target, current_slot)  
-        for each_card in gcfg.cfg.board:
-            if 'play' in each_card:
-                each_card['play'](gcfg.cfg.board.index(each_card),each_card['type'])
-    def refresh():
-        if gcfg.cfg.gold >= 1:
-            gcfg.cfg.gold -= gcfg.cfg.refresh_cost_1
-            gcfg.cfg.refresh_cost_1 = gcfg.cfg.refresh_cost_2
-            gcfg.cfg.refresh_cost_2 = 1
-            refresh_shop()
-        else:
-            print('Not enough gold!')
-    def sell(slot):
-        if 'sold' in gcfg.cfg.board[slot]:
-            gcfg.cfg.board[slot]['sold'](slot)
-        else:
-            abilities.sold.default(slot)
 
 # makes things look nice
 def pretty_print(input):
@@ -132,7 +122,7 @@ def pretty_print(input):
 
 
 
-#turn seq
+#turn sec
 def turn_input():
     cfg = gcfg.cfg
     for minion in gcfg.cfg.board:
@@ -145,4 +135,4 @@ def turn_input():
         if 'temp_health' in minion:
             minion['health'] -= minion['temp_health']
             del minion['temp_health']
-    #actionp()
+    actionp()
