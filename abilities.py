@@ -54,8 +54,8 @@ class deathrattle:
         gcfg.combat_board[current_board].insert(current_slot, {'name':'Cubling','attack':0,'health':1,'type':['Beast'],'tier':1}) 
     def scallywag(current_board, current_slot):
         gcfg.combat_board[current_board].insert (current_slot, {'name':'Pirate','attack':1,'health':1,'type':['Pirate'],'tier':1})
-        print(f"Player 1's board is:{gcfg.combat_board[0]}")
-        print(f"Player 2's board is:{gcfg.combat_board[1]}")
+        print(f"Player 1's board is: \n{pretty_print(gcfg.combat_board[0])}")
+        print(f"Player 2's board is: \n{pretty_print(gcfg.combat_board[1])}")
         events.attack(int(not(current_board)),int(current_board),current_slot)
         events.kill_dead_minions(current_slot)
 class battlecry:

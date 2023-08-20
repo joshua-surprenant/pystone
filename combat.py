@@ -56,39 +56,38 @@ def combat():
                 player_attacking_slot = 0
 
 
-            # 0 attack check
-            if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
-                for minion in gcfg.combat_board[attacking_player]:
-                    if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
-                        attacking_slot[attacking_player] += 1
-                    else:
-                        break
+        # 0 attack check
+        if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
+            for minion in gcfg.combat_board[attacking_player]:
                 if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
-                        defending_player = int(attacking_player)
-                        attacking_player = int(not defending_player)
-                        for minion in gcfg.combat_board[attacking_player]:
-                            if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
-                                attacking_slot[attacking_player] += 1
+                    attacking_slot[attacking_player] += 1
+                else:
+                    break
+            if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
+                    defending_player = int(attacking_player)
+                    attacking_player = int(not defending_player)
+                    for minion in gcfg.combat_board[attacking_player]:
                         if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
-                            winner = 'Tie'
-                            break
+                            attacking_slot[attacking_player] += 1
+                    if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
+                        winner = 'Tie'
+                        break
             
             
             
             
-            # attack time
-            abilities.events.attack(defending_player, attacking_player, attacking_slot[attacking_player])
+        # attack time
+        abilities.events.attack(defending_player, attacking_player, attacking_slot[attacking_player])
 
-            #set next minion to attack
-            if attacking_player == initial_attacking_player:
-                attacking_slot[attacking_player] += 1
+        #set next minion to attack
+        if attacking_player == initial_attacking_player:
+            attacking_slot[attacking_player] += 1
 
-            #kill dead minions
-            abilities.events.kill_dead_minions(attacking_slot[attacking_player])
+        #kill dead minions
+        abilities.events.kill_dead_minions(attacking_slot[attacking_player])
 
     print(f"Player 1's board is: \n{abilities.pretty_print(gcfg.combat_board[0])}")
     print(f"Player 2's board is: \n{abilities.pretty_print(gcfg.combat_board[1])}")
     print(f'Winner: {winner}')
     if loser_health != None:
         print(f'The loser took {damage} damage, leaving them at {loser_health} health.')
-combat()
