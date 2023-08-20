@@ -1,6 +1,7 @@
 #---to do---
 # make scallywag work at all
 # bug hunt (added like 1000 things and didnt test any of them sure i wont regret this)
+# fix combat attacking slot
 
 
 import gcfg
@@ -16,6 +17,7 @@ game_going = True
 
 # for each turn
 while game_going == True:
+    gcfg.turn += 1
     #for each player, set current player and play
     for player in gcfg.player_list:
         gcfg.cfg = __import__(player)

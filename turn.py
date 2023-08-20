@@ -1,6 +1,5 @@
 import gcfg
 import random
-cfg = gcfg.cfg
 import itertools
 import cfg1
 import cfg2
@@ -29,11 +28,10 @@ def create_pool():
 
 #shop refresh
 def refresh_shop(slots=gcfg.cfg.shop_slots):
-    cfg = gcfg.cfg
     if gcfg.cfg.current_shop != []:
         for card in gcfg.cfg.current_shop:
             gcfg.pool[card['tier']-1].append(card)
-        cfg.current_shop = []
+        gcfg.cfg.current_shop = []
     i=0
     populating = 0
     current_tier_pool = []
@@ -41,7 +39,7 @@ def refresh_shop(slots=gcfg.cfg.shop_slots):
         if gcfg.pool.index(tier) < gcfg.cfg.tav_tier:
             for card in tier:
                 current_tier_pool.append(card)
-    while populating < cfg.shop_slots:
+    while populating < gcfg.cfg.shop_slots:
         populating_card = current_tier_pool.pop(current_tier_pool.index(random.choice(current_tier_pool)))
         gcfg.cfg.current_shop.append(populating_card)
         gcfg.pool[populating_card['tier']-1].remove(populating_card)
@@ -55,12 +53,12 @@ def actionp():
         print(f'        Turn {gcfg.turn}')
         print('  <------------------>')
         print('Current shop:') 
-        pretty_print(gcfg.cfg.current_shop)
+        print(abilities.pretty_print(gcfg.cfg.current_shop))
         print('Current board:')
-        pretty_print(gcfg.cfg.board)
+        print(abilities.pretty_print(gcfg.cfg.board))
         print(f'Current gold: {gcfg.cfg.gold}')
         print('Current hand:')
-        pretty_print(gcfg.cfg.hand)
+        print(abilities.pretty_print(gcfg.cfg.hand))
         print('  <------------------>')
         gcfg.cfg.action = int(input('Select an action. 0=endturn 1=buy 2=play 3=refresh 4=sell.' + '\n'))
         #buy minion
@@ -112,24 +110,17 @@ def actionp():
             print('Invalid input!')
 
 # makes things look nice
-def pretty_print(input):
-    for element in input:
-        pretty_ver = ''
-        if 'attack' in element:
-            pretty_ver += f' --- {element["attack"]}/{element["health"]}'
-        pretty_ver += f' {element["name"]}'
-        print(pretty_ver)
+
 
 
 
 #turn sec
 def turn_input():
-    cfg = gcfg.cfg
     for minion in gcfg.cfg.board:
         if 'sot' in minion:
             minion['sot']()
     refresh_shop()
-    cfg.gold = gcfg.start_gold + gcfg.cfg.bonus_start_turn_gold
+    gcfg.cfg.gold = gcfg.start_gold + gcfg.cfg.bonus_start_turn_gold
     gcfg.cfg.bonus_start_turn_gold = 0
     for minion in gcfg.cfg.board:
         if 'temp_health' in minion:

@@ -176,6 +176,16 @@ class events:
                         if minion['has_reborn'] == True:
                             keywords.reborn(current_board,current_slot,minion)
 
+#prints but better (hand, board, etc)
+def pretty_print(input):
+    pretty_ver = ''
+    for element in input:
+        if 'attack' in element:
+            pretty_ver += f' --- {element["attack"]}/{element["health"]}'
+        pretty_ver += f' {element["name"]} \n'
+    return pretty_ver
+
+
 #all default minion values
 minion_list = [
 #{'name':,'attack':,'health','type':[],'tier':1,'taunt':,'reborn':,'deathrattle':,'battlecry':,'attacked':,'attack':,'sold':,'draw':,'sell':,'play':,}
