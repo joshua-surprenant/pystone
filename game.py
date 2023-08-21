@@ -1,6 +1,4 @@
 #---to do---
-# make scallywag work at all
-# bug hunt (added like 1000 things and didnt test any of them sure i wont regret this)
 # fix combat attacking slot
 
 

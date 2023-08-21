@@ -51,10 +51,10 @@ def combat():
             print(f"Player 1's board is: \n{abilities.pretty_print(gcfg.combat_board[0])}")
             print(f"Player 2's board is: \n{abilities.pretty_print(gcfg.combat_board[1])}")
 
+        # checks if its trying to attack further than the board goes
         for player_num, player_attacking_slot in enumerate(attacking_slot):
-            if player_attacking_slot > len(gcfg.combat_board[player_num]):
-                player_attacking_slot = 0
-
+            if player_attacking_slot >= len(gcfg.combat_board[player_num]):
+                attacking_slot[player_num] = 0
 
         # 0 attack check
         if gcfg.combat_board[attacking_player][attacking_slot[attacking_player]]['attack'] == 0:
