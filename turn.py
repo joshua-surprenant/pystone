@@ -80,7 +80,7 @@ def actionp():
             card = gcfg.cfg.board[current_target]
             if 'battlecry' in card:
                 card['battlecry'](current_target, current_slot)
-            if 'spellcast' in card:
+            if 'spell_cast' in card:
                 card['spell_cast'](current_target, current_slot)  
             for each_card in gcfg.cfg.board:
                 if 'play' in each_card:
@@ -116,6 +116,7 @@ def actionp():
 
 #turn sec
 def turn_input():
+    abilities.battlecry.living_constellation(0,0)
     for minion in gcfg.cfg.board:
         if 'sot' in minion:
             minion['sot']()

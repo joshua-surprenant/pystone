@@ -80,6 +80,27 @@ class battlecry:
             print('Invalid input! Not a murloc.')
     def refreshing_anomaly(current_target, current_slot):
         gcfg.cfg.refresh_cost_1 = 0
+    def oozeling_gladiator(current_target, current_slot):
+        gcfg.cfg.hand.append({'name':'Slimy Shield','spell_cast':spell_cast.slimy_shield})
+        events.card_added()
+    def iron_groundskeeper(current_target, current_slot):
+        battlecry_target = gcfg.cfg.board[int(input('Target which minion?'))]
+        if 'taunt' in battlecry_target:
+            del battlecry_target['taunt']
+        else:
+            print(gcfg.cfg.board)
+            print(battlecry_target)
+            battlecry_target['taunt'] = True
+    def living_constellation(current_target, current_slot):
+        # battlecry_target = gcfg.cfg.board[int(input('Target which minion?'))]
+        print('i cant be bothered dude')
+        # type_list = []
+        # for minion in gcfg.cfg.board:
+        #     type_list.append(minion['type'])
+
+
+
+
 class draw:
     def thorncaptain(slot):
         gcfg.cfg.board[slot]['health'] += 1
@@ -107,10 +128,17 @@ class spell_cast:
         gcfg.cfg.board[current_target][1] += 2
     def blood_gem(current_target, current_slot):
         del gcfg.cfg.board[current_target]
-        gcfg.cfg.board[current_target][1] += gcfg.cfg.blood_gem_stats[0]
-        gcfg.cfg.board[current_target][2] += gcfg.cfg.blood_gem_stats[1]
+        gcfg.cfg.board[current_target]['attack'] += gcfg.cfg.blood_gem_stats[0]
+        gcfg.cfg.board[current_target]['health'] += gcfg.cfg.blood_gem_stats[1]
     def gold_coin(current_target, current_slot):
+        del gcfg.cfg.board[current_target]
         gcfg.cfg.gold += 1
+    def slimy_shield(current_target, current_slot):
+        del gcfg.cfg.board[current_target]
+        gcfg.cfg.board[current_target]['attack'] += 1
+        gcfg.cfg.board[current_target]['health'] += 1
+        gcfg.cfg.board[current_target]['taunt'] = True
+
 class die:
     def scavenging_hyena(current_board, current_slot, id, dead_min_type):
         if 'Beast' in dead_min_type:
@@ -185,18 +213,16 @@ def pretty_print(input):
         pretty_ver += f' {element["name"]} \n'
     return pretty_ver
 
-
 #all default minion values
 minion_list = [
 #{'name':,'attack':,'health','type':[],'tier':1,'taunt':,'reborn':,'deathrattle':,'battlecry':,'attacked':,'attack':,'sold':,'draw':,'sell':,'play':,}
 #{'name':'','attack':,'health':,'type':[''],'tier':2,},
-# t1
+# 27.2
 {'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True},
 {'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner},
 {'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber},
 {'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'has_reborn':True,'eot':eot.micro_mummy},
 {'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon},
-{'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,},
 {'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater},
 {'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer},
 {'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly},
@@ -204,7 +230,6 @@ minion_list = [
 {'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter},
 {'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1},
 {'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag},
-{'name':'Scavenging Hyena','attack':2,'health':2,'type':['Beast'],'tier':1,'die':die.scavenging_hyena},
 {'name':'Sellemental','attack':2,'health':2,'type':['Elemental'],'tier':1,'sold':sold.sellemental},
 {'name':'Shell Collector','attack':2,'health':1,'type':['Naga'],'tier':1,'battlecry':battlecry.shell_collector},
 {'name':'Southsea Busker','attack':3,'health':1,'type':['Pirate'],'tier':1,'battlecry':battlecry.southsea_busker},
@@ -215,5 +240,34 @@ minion_list = [
 {'name':'Wrath Weaver','attack':1,'health':4,'type':[],'tier':1,'play':play.wrath_weaver},
 # t2
 {'name':'Backstage Security','attack':4,'health':6,'type':['Demon'],'tier':2,'sot':sot.backstage_security},
+{'name':'Oozeling Gladiator','attack':2,'health':4,'type':[],'tier':2,'battlecry':battlecry.oozeling_gladiator},
+# t3
+{'name':'Iron Groundskeeper','attack':5,'health':6,'type':[],'tier':3,'battlecry':battlecry.iron_groundskeeper},
+#pre 27.2
+# t1
+# {'name':'Dozy Whelp','attack':0,'health':3,'type':['Dragon'],'tier':1,'attacked':attacked.dozy_whelp,'taunt':True},
+# {'name':'Imprisoner','attack':2,'health':2,'type':['Demon'],'tier':1,'taunt':True,'deathrattle':deathrattle.imprisoner},
+# {'name':'Manasaber','attack':4,'health':1,'type':['Beast'],'tier':1,'deathrattle':deathrattle.manasaber},
+# {'name':'Micro Mummy','attack':1,'health':2,'type':['Mech','Undead'],'tier':1,'has_reborn':True,'eot':eot.micro_mummy},
+# {'name':'Mini-Myrmidon','attack':1,'health':2,'type':['Naga'],'tier':1,'spellcraft':spellcraft.minimyrmidon},
+# {'name':'Mistake','attack':1,'health':3,'type':['Demon','Beast','Naga','Dragon','Quilboar','Undead','Mech','Murloc','Elemental','Pirate'],'tier':1,},
+# {'name':'Picky Eater','attack':1,'health':1,'type':['Demon'],'tier':1,'battlecry':battlecry.picky_eater},
+# {'name':'Razorfen Geomancer','attack':3,'health':1,'type':['Quilboar'],'tier':1,'battlecry':battlecry.razorfen_geomancer},
+# {'name':'Refreshing Anomaly','attack':1,'health':4,'type':['Elemental'],'tier':1,'battlecry':battlecry.refreshing_anomaly},
+# {'name':'Risen Rider','attack':2,'health':1,'type':['Undead'],'tier':1,'taunt':True,'has_reborn':True},
+# {'name':'Rockpool Hunter','attack':2,'health':3,'type':['Murloc'],'tier':1,'battlecry':battlecry.rockpool_hunter},
+# {'name':'Rot Hide Gnoll','attack':1+gcfg.combat_deaths,'health':4,'type':['Undead'],'tier':1},
+# {'name':'Scallywag','attack':3,'health':1,'type':['Pirate'],'tier':1,'deathrattle':deathrattle.scallywag},
+# {'name':'Scavenging Hyena','attack':2,'health':2,'type':['Beast'],'tier':1,'die':die.scavenging_hyena},
+# {'name':'Sellemental','attack':2,'health':2,'type':['Elemental'],'tier':1,'sold':sold.sellemental},
+# {'name':'Shell Collector','attack':2,'health':1,'type':['Naga'],'tier':1,'battlecry':battlecry.shell_collector},
+# {'name':'Southsea Busker','attack':3,'health':1,'type':['Pirate'],'tier':1,'battlecry':battlecry.southsea_busker},
+# {'name':'Sun-Bacon Relaxer','attack':1,'health':2,'type':['Quilboar'],'tier':1,'sold':sold.sunbacon_relaxer},
+# {'name':'Swampstriker','attack':1,'health':4,'type':['Murloc'],'tier':1,'play':play.swampstriker},
+# {'name':'Thorncaptain','attack':4,'health':2,'type':['Quilboar','Pirate'],'tier':1,'draw':draw.thorncaptain},
+# {'name':'Upbeat Frontdrake','attack':1,'health':1,'type':['Dragon'],'tier':1,'eot':eot.upbeat_frontdrake,'counter':3},
+# {'name':'Wrath Weaver','attack':1,'health':4,'type':[],'tier':1,'play':play.wrath_weaver},
+# # t2
+# {'name':'Backstage Security','attack':4,'health':6,'type':['Demon'],'tier':2,'sot':sot.backstage_security},
 ]
 
